@@ -118,10 +118,8 @@ jobs:
     steps:
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          name: opendtu-pre-release
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
-          prerelease: true
-          title: "Automatic Pre-Release"
+          prerelease: false
           files: |
             *.bin
