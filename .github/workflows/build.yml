@@ -112,7 +112,7 @@ jobs:
 
       - name: Add Tag to Commit
         run: |
-          git tag ${{ github.github_sha }}
+          git tag test-${{ github.sha }}
           git push origin ${{ github.run_id }}
 
       - uses: actions/upload-artifact@v3
