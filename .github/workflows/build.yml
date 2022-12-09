@@ -147,6 +147,6 @@ jobs:
           draft: false
           files: |
             *.bin
-          tag_name: ${{ needs.build.release_tag.tag }}
+          tag_name: ${{ needs.build.output.release_tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
