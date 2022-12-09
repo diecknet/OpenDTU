@@ -101,6 +101,11 @@ jobs:
       - name: Copy bootloader_dio_40m.bin
         run: cp ~/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/bin/bootloader_dio_40m.bin .pio/build/${{ matrix.environment }}/bootloader_dio_40m.bin
 
+      - name: Generate Tag name for release
+        run: |
+          echo "TAG=build-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        id: release_tag
+
       - uses: actions/upload-artifact@v3
         with:
           name: opendtu-${{ matrix.environment }}
@@ -112,8 +117,8 @@ jobs:
 
       - name: Add Tag to Commit
         run: |
-          git tag autorelease-${{ github.sha }}
-          git push origin autorelease-${{ github.sha }}
+          git tag ${{ steps.release_tag.tag }}
+          git push origin ${{ steps.release_tag.tag }}
 
       - uses: actions/upload-artifact@v3
         with:
@@ -123,6 +128,9 @@ jobs:
             .pio/build/${{ matrix.environment }}/partitions.bin
             .pio/build/${{ matrix.environment }}/bootloader_dio_40m.bin
             .pio/build/${{ matrix.environment }}/boot_app0.bin
+
+    outputs:
+      release_tag: ${{ steps.release_tag.tag }}
 
   release:
     name: Create Release
@@ -139,6 +147,6 @@ jobs:
           draft: false
           files: |
             *.bin
-          tag_name: autorelease-${{ github.sha }}
+          tag_name: ${{ needs.build.release_tag.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
