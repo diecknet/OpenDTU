@@ -103,7 +103,7 @@ jobs:
 
       - name: Generate Tag name for release
         run: |
-          echo "TAG=build-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "tag=build-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
         id: release_tag
 
       - uses: actions/upload-artifact@v3
