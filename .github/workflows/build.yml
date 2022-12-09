@@ -117,8 +117,8 @@ jobs:
 
       - name: Add Tag to Commit
         run: |
-          git tag ${{ steps.release_tag.tag }}
-          git push origin ${{ steps.release_tag.tag }}
+          git tag ${{ steps.release_tag.outputs.tag }}
+          git push origin ${{ steps.release_tag.outputs.tag }}
 
       - uses: actions/upload-artifact@v3
         with:
@@ -130,7 +130,7 @@ jobs:
             .pio/build/${{ matrix.environment }}/boot_app0.bin
 
     outputs:
-      release_tag: ${{ steps.release_tag.tag }}
+      release_tag: ${{ steps.release_tag.outputs.tag }}
 
   release:
     name: Create Release
