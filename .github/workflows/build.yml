@@ -106,21 +106,13 @@ jobs:
           echo "tag=build-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
         id: release_tag
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: opendtu-${{ matrix.environment }}
-          path: |
-            .pio/build/${{ matrix.environment }}/opendtu-${{ matrix.environment }}.bin
-            .pio/build/${{ matrix.environment }}/partitions.bin
-            .pio/build/${{ matrix.environment }}/bootloader_dio_40m.bin
-            .pio/build/${{ matrix.environment }}/boot_app0.bin
-
       - name: Add Tag to Commit
         run: |
           git tag ${{ steps.release_tag.outputs.tag }}
           git push origin ${{ steps.release_tag.outputs.tag }}
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload Artifacts (.bin files)
+        uses: actions/upload-artifact@v3
         with:
           name: opendtu-release
           path: |
@@ -141,7 +133,7 @@ jobs:
         with:
           name: opendtu-release
 
-      - name: Create draft release
+      - name: Create tagged release
         uses: softprops/action-gh-release@v1
         with:
           draft: false
